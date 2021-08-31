@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="bg_color">#FF0A1E3D</color>
+    <color name="recycler_bg">#F4FAFD</color>
 </resources>

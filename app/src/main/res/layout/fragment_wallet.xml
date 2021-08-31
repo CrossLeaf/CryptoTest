@@ -35,11 +35,11 @@
         android:id="@+id/tv_send"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:drawableTop="@android:drawable/stat_sys_upload"
         android:text="Send"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:layout_marginTop="40dp"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/tv_receive"
         app:layout_constraintHorizontal_bias="0.5"
@@ -58,4 +58,17 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tv_send"
         app:layout_constraintTop_toTopOf="@+id/tv_send" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_currencies"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/wallet_recycler_bg"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_send" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
