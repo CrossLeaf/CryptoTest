@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_wallet, R.id.navigation_defi
             )
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
     }

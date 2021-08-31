@@ -27,7 +27,6 @@ class WalletFragment : Fragment() {
 
         _binding = FragmentWalletBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         return root
     }
 
