@@ -3,23 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_wallet">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.eton.cryptotest.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_wallet"
+        android:name="com.eton.cryptotest.ui.wallet.WalletFragment"
+        android:label="@string/title_wallet"
+        tools:layout="@layout/fragment_wallet" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.eton.cryptotest.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_defi"
+        android:name="com.eton.cryptotest.ui.defi.DeFiFragment"
+        android:label="@string/title_defi"
+        tools:layout="@layout/fragment_defi" />
 
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.eton.cryptotest.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
 </navigation>
