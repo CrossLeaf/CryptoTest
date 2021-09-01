@@ -1,8 +1,9 @@
 package com.eton.cryptotest.model
 
 data class Currency(
-    val picture:String,
-    val name:String,
-    val amount:String,
-    val value:String
+    var picture: String?,
+    var name: String?,
+    var symbol: String?,
+    var amount: Double = 0.0,
+    var value: Double = 0.0
 )

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eton.cryptotest.databinding.FragmentWalletBinding
 
@@ -16,6 +15,7 @@ class WalletFragment : Fragment() {
     private var _binding: FragmentWalletBinding? = null
 
     private val binding get() = _binding!!
+    var walletAdapter = WalletAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,19 +34,21 @@ class WalletFragment : Fragment() {
     }
 
     private fun initLiveData() {
-
+        walletViewModel.currencyLiveData.observe(viewLifecycleOwner, {
+            walletAdapter.setCurrencyList(it)
+        })
     }
 
     private fun initData() {
-        walletViewModel.getCurrency()
+        walletViewModel.getWallet()
     }
 
     private fun initView() {
         binding.recyclerCurrencies.let {
             it.layoutManager =
                 LinearLayoutManager(context).apply { orientation = LinearLayoutManager.VERTICAL }
-            it.adapter = WalletAdapter().apply {
-                currencies = walletViewModel.currencies
+            it.adapter = walletAdapter.apply {
+                setCurrencyList(walletViewModel.currencies)
             }
         }
 
