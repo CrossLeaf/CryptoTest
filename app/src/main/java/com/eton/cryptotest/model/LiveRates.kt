@@ -1,17 +1,28 @@
 package com.eton.cryptotest.model
 
-data class LiveRates(val ok: Boolean = false,
-                     val warning: String = "",
-                     val tiers: List<TiersItem>?)
+import com.google.gson.annotations.SerializedName
+
+data class LiveRates(
+    val ok: Boolean = false,
+    val warning: String = "",
+    val tiers: List<TiersItem>?
+)
 
 
-data class TiersItem(val fromCurrency: String = "",
-                     val toCurrency: String = "",
-                     val rates: List<RatesItem>?,
-                     val timeStamp: Int = 0)
+data class TiersItem(
+    @SerializedName("from_currency")
+    val fromCurrency: String = "",
+    @SerializedName("to_currency")
+    val toCurrency: String = "",
+    val rates: List<RatesItem>?,
+    @SerializedName("time_stamp")
+    val timeStamp: Int = 0
+)
 
 
-data class RatesItem(val amount: String = "",
-                     val rate: String = "")
+data class RatesItem(
+    val amount: String = "",
+    val rate: String = ""
+)
 
 
