@@ -59,6 +59,39 @@ class WalletFragment : Fragment() {
                 )
             }
         })
+
+        walletViewModel.statusLiveData.observe(viewLifecycleOwner, {
+            when (it) {
+                WalletViewModel.STATUS.LOADING -> {
+                    binding.recyclerCurrencies.visibility = View.GONE
+                    binding.tvStatus.let {
+                        it.visibility = View.VISIBLE
+                        it.text = "Loading"
+                    }
+                }
+
+                WalletViewModel.STATUS.SUCCESS -> {
+                    if (walletViewModel.currencies.isEmpty()) {
+                        binding.recyclerCurrencies.visibility = View.GONE
+                        binding.tvStatus.let {
+                            it.visibility = View.VISIBLE
+                            it.text = "Empty list"
+                        }
+                    } else {
+                        binding.recyclerCurrencies.visibility = View.VISIBLE
+                        binding.tvStatus.visibility = View.GONE
+                    }
+                }
+
+                WalletViewModel.STATUS.FAILURE -> {
+                    binding.recyclerCurrencies.visibility = View.GONE
+                    binding.tvStatus.let {
+                        it.visibility = View.VISIBLE
+                        it.text = "Failure"
+                    }
+                }
+            }
+        })
     }
 
     private fun initData() {

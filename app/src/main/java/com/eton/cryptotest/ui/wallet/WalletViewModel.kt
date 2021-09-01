@@ -10,6 +10,7 @@ import com.eton.cryptotest.model.WalletItem
 import com.eton.cryptotest.repository.WalletRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class WalletViewModel : ViewModel() {
@@ -19,12 +20,15 @@ class WalletViewModel : ViewModel() {
     var currencies = ArrayList<Currency>()
     val currencyLiveData = MutableLiveData<ArrayList<Currency>>()
     val totalValueLiveData = MutableLiveData<Double>()
+    val statusLiveData = MutableLiveData<STATUS>()
 
     /**
      * get wallet data
      */
     fun getWallet() {
         viewModelScope.launch(Dispatchers.IO) {
+            statusLiveData.postValue(STATUS.LOADING)
+            delay(3000)
             val currencyTask = async { getCurrency() }
             val liveRatesTask = async { getLiveRates() }
             val walletBalanceTask = async { getWalletBalance() }
@@ -42,10 +46,9 @@ class WalletViewModel : ViewModel() {
     private suspend fun getCurrency(): List<CurrenciesItem> {
         val apiResult = repository.getCurrencies()
         if (apiResult.ok && apiResult.currencies != null) {
-
             return apiResult.currencies
         } else {
-            // TODO: 2021/9/1 show error msg
+            statusLiveData.postValue(STATUS.FAILURE)
         }
         return emptyList()
     }
@@ -58,7 +61,7 @@ class WalletViewModel : ViewModel() {
         if (apiResult.ok) {
             return apiResult.tiers ?: emptyList()
         } else {
-            // TODO: 2021/9/1 show error msg
+            statusLiveData.postValue(STATUS.FAILURE)
         }
         return emptyList()
     }
@@ -71,7 +74,7 @@ class WalletViewModel : ViewModel() {
         if (apiResult.ok) {
             return apiResult.wallet ?: emptyList()
         } else {
-            // TODO: 2021/9/1 show error msg
+            statusLiveData.postValue(STATUS.FAILURE)
         }
         return emptyList()
     }
@@ -84,6 +87,9 @@ class WalletViewModel : ViewModel() {
         liveRateList: List<TiersItem>,
         walletBalanceList: List<WalletItem>
     ) {
+        if (statusLiveData.value == STATUS.FAILURE) {
+            return
+        }
         // add currency
         for (item in currencyList) {
             val data = currencyMap[item.symbol]
@@ -120,6 +126,7 @@ class WalletViewModel : ViewModel() {
 
         currencies.addAll(currencyMap.values)
         currencyLiveData.postValue(currencies)
+        statusLiveData.postValue(STATUS.SUCCESS)
     }
 
     /**
@@ -132,5 +139,9 @@ class WalletViewModel : ViewModel() {
         }
 
         totalValueLiveData.postValue(totalValue)
+    }
+
+    enum class STATUS {
+        LOADING, FAILURE, SUCCESS
     }
 }
