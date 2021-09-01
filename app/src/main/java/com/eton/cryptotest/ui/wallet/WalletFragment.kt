@@ -40,7 +40,7 @@ class WalletFragment : Fragment() {
     }
 
     private fun initData() {
-        walletViewModel.getCurrency()
+        walletViewModel.getWallet()
     }
 
     private fun initView() {

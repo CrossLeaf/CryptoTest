@@ -6,6 +6,7 @@ data class WalletBalance(val ok: Boolean = false,
 
 
 data class WalletItem(val currency: String = "",
-                      val amount: Int = 0)
+                      val amount: Double = 0.0
+)
 
 
