@@ -14,10 +14,11 @@ import kotlinx.coroutines.launch
 
 class WalletViewModel : ViewModel() {
     private val repository by lazy { WalletRepository() }
+    private val currencyMap = mutableMapOf<String, Currency>()
 
     var currencies = ArrayList<Currency>()
     val currencyLiveData = MutableLiveData<ArrayList<Currency>>()
-    val currencyMap = mutableMapOf<String, Currency>()
+    val totalValueLiveData = MutableLiveData<Double>()
 
     fun getWallet() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -28,6 +29,7 @@ class WalletViewModel : ViewModel() {
             val liveRateList = liveRatesTask.await()
             val walletBalanceList = walletBalanceTask.await()
             combineData(currencyList, liveRateList, walletBalanceList)
+            calculateTotalValue()
         }
     }
 
@@ -62,7 +64,7 @@ class WalletViewModel : ViewModel() {
         return emptyList()
     }
 
-    fun combineData(
+    private fun combineData(
         currencyList: List<CurrenciesItem>,
         liveRateList: List<TiersItem>,
         walletBalanceList: List<WalletItem>
@@ -76,7 +78,7 @@ class WalletViewModel : ViewModel() {
                     item.name,
                     item.symbol
                 )
-                currencyMap.set(item.coinId, currency)
+                currencyMap[item.coinId] = currency
             } else {
                 data.picture = item.colorfulImageUrl
                 data.name = item.name
@@ -103,5 +105,14 @@ class WalletViewModel : ViewModel() {
 
         currencies.addAll(currencyMap.values)
         currencyLiveData.postValue(currencies)
+    }
+
+    private fun calculateTotalValue() {
+        var totalValue = 0.0
+        for (currency in currencyMap.values) {
+            totalValue += currency.value
+        }
+
+        totalValueLiveData.postValue(totalValue)
     }
 }

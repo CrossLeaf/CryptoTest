@@ -1,12 +1,18 @@
 package com.eton.cryptotest.ui.wallet
 
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.eton.cryptotest.R
 import com.eton.cryptotest.databinding.FragmentWalletBinding
 
 class WalletFragment : Fragment() {
@@ -36,6 +42,22 @@ class WalletFragment : Fragment() {
     private fun initLiveData() {
         walletViewModel.currencyLiveData.observe(viewLifecycleOwner, {
             walletAdapter.setCurrencyList(it)
+        })
+
+        walletViewModel.totalValueLiveData.observe(viewLifecycleOwner, {
+            val text = "$ ${String.format("%.2f", it)} USD"
+            binding.tvBalance.text = SpannableString(text).also {
+                it.setSpan(
+                    ForegroundColorSpan(
+                        ContextCompat.getColor(requireContext(), R.color.white)
+                    ),
+                    1, text.length - 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                it.setSpan(
+                    RelativeSizeSpan(1.2f),
+                    1, text.length - 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
         })
     }
 
