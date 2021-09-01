@@ -20,6 +20,9 @@ class WalletViewModel : ViewModel() {
     val currencyLiveData = MutableLiveData<ArrayList<Currency>>()
     val totalValueLiveData = MutableLiveData<Double>()
 
+    /**
+     * get wallet data
+     */
     fun getWallet() {
         viewModelScope.launch(Dispatchers.IO) {
             val currencyTask = async { getCurrency() }
@@ -33,7 +36,10 @@ class WalletViewModel : ViewModel() {
         }
     }
 
-    suspend fun getCurrency(): List<CurrenciesItem> {
+    /**
+     * get currency data from api
+     */
+    private suspend fun getCurrency(): List<CurrenciesItem> {
         val apiResult = repository.getCurrencies()
         if (apiResult.ok && apiResult.currencies != null) {
 
@@ -44,7 +50,10 @@ class WalletViewModel : ViewModel() {
         return emptyList()
     }
 
-    suspend fun getLiveRates(): List<TiersItem> {
+    /**
+     * get live rates data from api
+     */
+    private suspend fun getLiveRates(): List<TiersItem> {
         val apiResult = repository.getLiveRates()
         if (apiResult.ok) {
             return apiResult.tiers ?: emptyList()
@@ -54,7 +63,10 @@ class WalletViewModel : ViewModel() {
         return emptyList()
     }
 
-    suspend fun getWalletBalance(): List<WalletItem> {
+    /**
+     * get wallet balance data from api
+     */
+    private suspend fun getWalletBalance(): List<WalletItem> {
         val apiResult = repository.getWalletBalance()
         if (apiResult.ok) {
             return apiResult.wallet ?: emptyList()
@@ -64,6 +76,9 @@ class WalletViewModel : ViewModel() {
         return emptyList()
     }
 
+    /**
+     * combine api data
+     */
     private fun combineData(
         currencyList: List<CurrenciesItem>,
         liveRateList: List<TiersItem>,
@@ -107,6 +122,9 @@ class WalletViewModel : ViewModel() {
         currencyLiveData.postValue(currencies)
     }
 
+    /**
+     * Calculate wallet total amount.
+     */
     private fun calculateTotalValue() {
         var totalValue = 0.0
         for (currency in currencyMap.values) {
