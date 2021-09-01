@@ -28,8 +28,6 @@ class WalletViewModel : ViewModel() {
             val liveRateList = liveRatesTask.await()
             val walletBalanceList = walletBalanceTask.await()
             combineData(currencyList, liveRateList, walletBalanceList)
-
-
         }
     }
 
@@ -69,26 +67,37 @@ class WalletViewModel : ViewModel() {
         liveRateList: List<TiersItem>,
         walletBalanceList: List<WalletItem>
     ) {
+        // add currency
         for (item in currencyList) {
-            val map = currencyMap[item.symbol]
-            if (map == null) {
+            val data = currencyMap[item.symbol]
+            if (data == null) {
                 val currency = Currency(
                     item.colorfulImageUrl,
                     item.name,
-                    "0 ${item.symbol}",
-                    "$ 0"
+                    item.symbol
                 )
                 currencyMap.set(item.coinId, currency)
             } else {
-                map.picture = item.colorfulImageUrl
-                map.name = item.name
+                data.picture = item.colorfulImageUrl
+                data.name = item.name
             }
         }
 
+        // add amount
         for (item in walletBalanceList) {
-            val map = currencyMap[item.currency]
-            if (map != null) {
-                map.amount = "${item.amount} ${item.currency}"
+            val data = currencyMap[item.currency]
+            if (data != null) {
+                data.amount = item.amount
+            }
+        }
+
+        // add value
+        for (item in liveRateList) {
+            val data = currencyMap[item.fromCurrency]
+            if (data != null) {
+                val rate = item.rates?.get(0)?.rate
+                if (rate != null)
+                    data.value = rate * data.amount
             }
         }
 

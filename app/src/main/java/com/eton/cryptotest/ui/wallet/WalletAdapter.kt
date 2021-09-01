@@ -28,8 +28,8 @@ class WalletAdapter : RecyclerView.Adapter<WalletAdapter.WalletViewHolder>() {
                 .load(picture)
                 .into(holder.imgCurrency)
             holder.tvName.text = name
-            holder.tvAmount.text = amount
-            holder.tvValue.text = value
+            holder.tvAmount.text = "$amount $symbol"
+            holder.tvValue.text = String.format("%.2f", value)
         }
     }
 

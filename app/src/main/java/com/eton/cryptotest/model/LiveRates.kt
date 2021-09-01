@@ -22,7 +22,7 @@ data class TiersItem(
 
 data class RatesItem(
     val amount: String = "",
-    val rate: String = ""
+    val rate: Double = 0.0
 )
 
 
