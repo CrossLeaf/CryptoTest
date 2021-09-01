@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_wallet">
+
+    <fragment
+        android:id="@+id/navigation_wallet"
+        android:name="com.eton.cryptotest.ui.wallet.WalletFragment"
+        android:label="@string/title_wallet"
+        tools:layout="@layout/fragment_wallet" />
+
+    <fragment
+        android:id="@+id/navigation_defi"
+        android:name="com.eton.cryptotest.ui.defi.DeFiFragment"
+        android:label="@string/title_defi"
+        tools:layout="@layout/fragment_defi" />
+
+</navigation>
