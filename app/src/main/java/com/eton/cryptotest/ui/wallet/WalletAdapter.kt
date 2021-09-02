@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.eton.cryptotest.R
 import com.eton.cryptotest.model.Currency
+import java.text.DecimalFormat
 
 class WalletAdapter : RecyclerView.Adapter<WalletAdapter.WalletViewHolder>() {
     var currencies = ArrayList<Currency>()
@@ -28,8 +29,8 @@ class WalletAdapter : RecyclerView.Adapter<WalletAdapter.WalletViewHolder>() {
                 .load(picture)
                 .into(holder.imgCurrency)
             holder.tvName.text = name
-            holder.tvAmount.text = "$amount $symbol"
-            holder.tvValue.text = String.format("%.2f", value)
+            holder.tvAmount.text = "${DecimalFormat("#.########").format(amount)} $symbol"
+            holder.tvValue.text = "$ ${DecimalFormat("#.##").format(value)}"
         }
     }
 

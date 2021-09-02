@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eton.cryptotest.R
 import com.eton.cryptotest.databinding.FragmentWalletBinding
+import java.text.DecimalFormat
 
 class WalletFragment : Fragment() {
 
@@ -45,7 +46,7 @@ class WalletFragment : Fragment() {
         })
 
         walletViewModel.totalValueLiveData.observe(viewLifecycleOwner, {
-            val text = "$ ${String.format("%.2f", it)} USD"
+            val text = "$ ${DecimalFormat("#.##").format(it)} USD"
             binding.tvBalance.text = SpannableString(text).also {
                 it.setSpan(
                     ForegroundColorSpan(
@@ -60,38 +61,40 @@ class WalletFragment : Fragment() {
             }
         })
 
-        walletViewModel.statusLiveData.observe(viewLifecycleOwner, { status: WalletViewModel.STATUS ->
-            when (status) {
-                 is WalletViewModel.STATUS.LOADING -> {
-                    binding.recyclerCurrencies.visibility = View.GONE
-                    binding.tvStatus.let {
-                        it.visibility = View.VISIBLE
-                        it.text = status.text
-                    }
-                }
-
-                is WalletViewModel.STATUS.SUCCESS -> {
-                    if (walletViewModel.currencies.isEmpty()) {
+        walletViewModel.statusLiveData.observe(
+            viewLifecycleOwner,
+            { status: WalletViewModel.STATUS ->
+                when (status) {
+                    is WalletViewModel.STATUS.LOADING -> {
                         binding.recyclerCurrencies.visibility = View.GONE
                         binding.tvStatus.let {
                             it.visibility = View.VISIBLE
                             it.text = status.text
                         }
-                    } else {
-                        binding.recyclerCurrencies.visibility = View.VISIBLE
-                        binding.tvStatus.visibility = View.GONE
                     }
-                }
 
-                is WalletViewModel.STATUS.FAILURE -> {
-                    binding.recyclerCurrencies.visibility = View.GONE
-                    binding.tvStatus.let {
-                        it.visibility = View.VISIBLE
-                        it.text = status.text
+                    is WalletViewModel.STATUS.SUCCESS -> {
+                        if (walletViewModel.currencies.isEmpty()) {
+                            binding.recyclerCurrencies.visibility = View.GONE
+                            binding.tvStatus.let {
+                                it.visibility = View.VISIBLE
+                                it.text = status.text
+                            }
+                        } else {
+                            binding.recyclerCurrencies.visibility = View.VISIBLE
+                            binding.tvStatus.visibility = View.GONE
+                        }
+                    }
+
+                    is WalletViewModel.STATUS.FAILURE -> {
+                        binding.recyclerCurrencies.visibility = View.GONE
+                        binding.tvStatus.let {
+                            it.visibility = View.VISIBLE
+                            it.text = status.text
+                        }
                     }
                 }
-            }
-        })
+            })
     }
 
     private fun initData() {
