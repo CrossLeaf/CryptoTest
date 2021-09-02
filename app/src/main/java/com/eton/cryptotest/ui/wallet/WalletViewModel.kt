@@ -27,7 +27,7 @@ class WalletViewModel : ViewModel() {
      */
     fun getWallet() {
         viewModelScope.launch(Dispatchers.IO) {
-            statusLiveData.postValue(STATUS.LOADING)
+            statusLiveData.postValue(STATUS.LOADING("Loading"))
             delay(3000)
             val currencyTask = async { getCurrency() }
             val liveRatesTask = async { getLiveRates() }
@@ -48,7 +48,7 @@ class WalletViewModel : ViewModel() {
         if (apiResult.ok && apiResult.currencies != null) {
             return apiResult.currencies
         } else {
-            statusLiveData.postValue(STATUS.FAILURE)
+            statusLiveData.postValue(STATUS.FAILURE("Failure"))
         }
         return emptyList()
     }
@@ -61,7 +61,7 @@ class WalletViewModel : ViewModel() {
         if (apiResult.ok) {
             return apiResult.tiers ?: emptyList()
         } else {
-            statusLiveData.postValue(STATUS.FAILURE)
+            statusLiveData.postValue(STATUS.FAILURE("Failure"))
         }
         return emptyList()
     }
@@ -74,7 +74,7 @@ class WalletViewModel : ViewModel() {
         if (apiResult.ok) {
             return apiResult.wallet ?: emptyList()
         } else {
-            statusLiveData.postValue(STATUS.FAILURE)
+            statusLiveData.postValue(STATUS.FAILURE("Failure"))
         }
         return emptyList()
     }
@@ -87,7 +87,7 @@ class WalletViewModel : ViewModel() {
         liveRateList: List<TiersItem>,
         walletBalanceList: List<WalletItem>
     ) {
-        if (statusLiveData.value == STATUS.FAILURE) {
+        if (statusLiveData.value == STATUS.FAILURE("Failure")) {
             return
         }
         // add currency
@@ -126,7 +126,7 @@ class WalletViewModel : ViewModel() {
 
         currencies.addAll(currencyMap.values)
         currencyLiveData.postValue(currencies)
-        statusLiveData.postValue(STATUS.SUCCESS)
+        statusLiveData.postValue(STATUS.SUCCESS(if (currencies.isEmpty()) "Empty list" else ""))
     }
 
     /**
@@ -141,7 +141,9 @@ class WalletViewModel : ViewModel() {
         totalValueLiveData.postValue(totalValue)
     }
 
-    enum class STATUS {
-        LOADING, FAILURE, SUCCESS
+    sealed class STATUS {
+        data class LOADING(val text: String = "") : STATUS()
+        data class FAILURE(val text: String = "") : STATUS()
+        data class SUCCESS(val text: String = "") : STATUS()
     }
 }

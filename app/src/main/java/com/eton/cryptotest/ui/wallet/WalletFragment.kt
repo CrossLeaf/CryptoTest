@@ -60,22 +60,22 @@ class WalletFragment : Fragment() {
             }
         })
 
-        walletViewModel.statusLiveData.observe(viewLifecycleOwner, {
-            when (it) {
-                WalletViewModel.STATUS.LOADING -> {
+        walletViewModel.statusLiveData.observe(viewLifecycleOwner, { status: WalletViewModel.STATUS ->
+            when (status) {
+                 is WalletViewModel.STATUS.LOADING -> {
                     binding.recyclerCurrencies.visibility = View.GONE
                     binding.tvStatus.let {
                         it.visibility = View.VISIBLE
-                        it.text = "Loading"
+                        it.text = status.text
                     }
                 }
 
-                WalletViewModel.STATUS.SUCCESS -> {
+                is WalletViewModel.STATUS.SUCCESS -> {
                     if (walletViewModel.currencies.isEmpty()) {
                         binding.recyclerCurrencies.visibility = View.GONE
                         binding.tvStatus.let {
                             it.visibility = View.VISIBLE
-                            it.text = "Empty list"
+                            it.text = status.text
                         }
                     } else {
                         binding.recyclerCurrencies.visibility = View.VISIBLE
@@ -83,11 +83,11 @@ class WalletFragment : Fragment() {
                     }
                 }
 
-                WalletViewModel.STATUS.FAILURE -> {
+                is WalletViewModel.STATUS.FAILURE -> {
                     binding.recyclerCurrencies.visibility = View.GONE
                     binding.tvStatus.let {
                         it.visibility = View.VISIBLE
-                        it.text = "Failure"
+                        it.text = status.text
                     }
                 }
             }
