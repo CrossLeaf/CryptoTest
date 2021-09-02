@@ -16,7 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/btc" />
+        app:srcCompat="@mipmap/logo" />
 
     <TextView
         android:id="@+id/tv_name"
@@ -28,7 +28,7 @@
         app:layout_constraintEnd_toStartOf="@+id/barrier"
         app:layout_constraintStart_toEndOf="@+id/img_currency"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="Bitcoin" />
+        tools:text="Bitcoin" />
 
     <TextView
         android:id="@+id/tv_amount"
@@ -40,7 +40,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        android:text="67.8745613 BAT" />
+        tools:text="67.8745613 BAT" />
 
     <TextView
         android:id="@+id/tv_value"
@@ -50,7 +50,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_amount"
-        android:text="$18.20" />
+        tools:text="$18.20" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
